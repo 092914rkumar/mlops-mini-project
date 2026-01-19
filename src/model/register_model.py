@@ -6,16 +6,13 @@ import logging
 import os
 import dagshub
 
-
 # Set up DagsHub credentials for MLflow tracking
-dagshub_token = os.getenv("DAGSHUB_PAT") # ← FIXED: proper variable name
+dagshub_token = os.getenv("DAGSHUB_PAT")
 if not dagshub_token:
     raise EnvironmentError("DAGSHUB_PAT environment variable is not set")
 
 os.environ["MLFLOW_TRACKING_USERNAME"] = "092914rkumar"
 os.environ["MLFLOW_TRACKING_PASSWORD"] = dagshub_token
-
-
 
 dagshub_url = "https://dagshub.com"
 repo_owner = "092914rkumar"
@@ -56,10 +53,10 @@ def load_model_info(file_path: str) -> dict:
         logger.error('Unexpected error occurred while loading the model info: %s', e)
         raise
 
-def register_model(model_name: str, experiment_info: dict):
+def register_model(model_name: str, model_info: dict):
     """Register the model to the MLflow Model Registry."""
     try:
-        model_uri = f"runs:/{experiment_info['run_id']}/{experiment_info['model_path']}"
+        model_uri = f"model:/{model_info['run_id']}/{model_info['model_path']}"
         
         # Register the model
         model_version = mlflow.register_model(model_uri, model_name)
