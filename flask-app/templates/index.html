@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Sentimental analysis</title>
+    </head>
+    <body>
+        <h1>Sentimental analysis</h1>
+        <form action = '/predict' method = 'post'>
+            <label for = 'review'>Enter your review:</label><br>
+            <input type = 'text' id = 'review' name = 'review' size = '100'><br><br>
+            <input type = 'submit' value = 'Submit'>
+
+        </form>
+
+        {% if result is not none %}
+            {% if result == 1 %}
+                <h2>Happy</h2>
+            {% else %}
+                <h2>Sad</h2>
+            {% endif %}
+        {% endif %}
+    </body>
+
+
+
+
+
+</html>
