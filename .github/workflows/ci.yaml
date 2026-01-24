@@ -15,10 +15,25 @@ jobs:
       with:
         python-version: '3.14.2'
 
+    - name: Cache pip dependencies
+      uses: actions/cache@v3
+      with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
 
     - name: run pipeline
+      env:
+        DAGSHUB_PATH: ${{ secrets.DAGSHUB_PATH }}
       run: |
         dvc repro
+    - name: Run model tests
+      env:
+          DAGSHUB_PAT: ${{ secrets.DAGSHUB_PAT }}
+      run: |
+          python -m unittest tests/test_model.py
